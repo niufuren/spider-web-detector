@@ -58,8 +58,6 @@ class SpiderwebTrain:
 
     def validate_parameters(self, folds=3):
 
-        # folds = 3
-
         web_labels = [1] * len(self.web_features)
         non_web_labels = [-1] * len(self.non_web_features)
         labels = web_labels + non_web_labels

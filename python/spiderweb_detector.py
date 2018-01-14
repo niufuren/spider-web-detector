@@ -3,7 +3,6 @@ import numpy as np
 import svmutil as lib
 import sys
 import getopt
-import pdb
 
 
 class SpiderwebDetector:
@@ -15,7 +14,6 @@ class SpiderwebDetector:
         self.moment1_mat = []
         self.moment2_mat = []
         self.labels = []
-        # self.count = 0
 
     def read_image(self, file_name):
 
@@ -30,8 +28,6 @@ class SpiderwebDetector:
 
         low_in = sorted_img[int(number_ele * 0.02)]
         high_in = sorted_img[int(number_ele * 0.98)]
-
-        # print low_in, high_in
 
         low_out = 0
         high_out = 255
@@ -89,9 +85,6 @@ class SpiderwebDetector:
         kernel_open = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9, 9))
 
         img_open = cv2.morphologyEx(img_eq, cv2.MORPH_OPEN, kernel_open)
-        # cv2.imwrite('img_open.jpg', img_open)
-
-        # pdb.set_trace()
 
         # perform the imadjust
         img_contrast = self.imadjust(img_open)
@@ -103,8 +96,6 @@ class SpiderwebDetector:
                                  cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
         self.im_bw = im_bw.copy()
-
-        # cv2.imwrite('spiderweb1_bw.jpg', im_bw)
 
         moments_list = self.regions_moment()
 
@@ -154,7 +145,6 @@ class SpiderwebDetector:
         moment2_mat = np.zeros(np.shape(self.img))
 
         for i in range(len(moments_list)):
-            # pdb.set_trace()
             region = moments_list[i][0]
             # print region
             moment1_mat[region[0][0], region[0][1]] = moments_list[i][1]
@@ -221,12 +211,10 @@ class SpiderwebDetector:
         web_features = web_features.T
         # print web_features.shape
 
-        # pdb.set_trace()
         return [web_features, non_web_features]
 
 
 def main(argv):
-    # pdb.set_trace()
     input_image = ''
     model = ''
     output_image = ''
@@ -250,10 +238,8 @@ def main(argv):
     spiderweb_detector.process()
 
     spiderweb_detector.spiderweb_identify(model)
-    # pdb.set_trace()
     spiderweb_detector.save_result(output_image)
 
 
 if __name__ == "__main__":
-    # pdb.set_trace()
     main(sys.argv[1:])
